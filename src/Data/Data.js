@@ -1,14 +1,4 @@
 
-export const LoginList = [  
-  {   
-    login: "Alex",
-    password: "leo"
-  },  
-  {
-    login: "martin",
-    password: "zebra"
-  }    
-]
 
 export const ArreyList = [
   {

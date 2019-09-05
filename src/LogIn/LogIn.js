@@ -5,7 +5,7 @@ const RenderLogIn = () => {
         <form>
         <div className="form-group">
           <label>Login</label>
-          <input type="email" className="form-control" 
+          <input className="form-control" 
           placeholder="Enter Login" />
         </div>
         <div className="form-group">

@@ -4,24 +4,56 @@ import BriefTaskList from './BriefTaskList'
 import DetailTask from './DetailTask'
 import ScrumTask from './ScrumTask'
 
-import { ArreyList } from '../Data/Data'
-
-console.log("hi")
-
 class ListTask extends React.Component {
 
   constructor(props) {
     super(props);
+
+    let xhr = new XMLHttpRequest();
+
+  xhr.open('GET', 'http://localhost:8080/Data.json', false);
+
+  try {
+    xhr.send();
+    if (xhr.status != 200) {
+      alert(`Ошибка ${xhr.status}: ${xhr.statusText}`);
+    } else {
+      alert('Данные загружены');
+    }
+  } catch(err) { // для отлова ошибок используем конструкцию try...catch вместо onerror
+    alert("Запрос не удался");
+  }
+
+  const ArreyList = JSON.parse(xhr.response)
+
     this.state = {
       view: "briefly",
       sort: "status",
       filter: "all",
-      arr: ArreyList
+      allTask: ArreyList,
+      arr: []
     }
   }
 
+  componentDidMount() {
+    
+    this.data = fetch('http://localhost:8080/Data.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+        }
+        return response.json();
+    })
+    .then(json => {
+       return JSON.stringify(json)
+    })
+    .then(json => {
+      this.setState({arr: JSON.parse(json)})
+    });  
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    const filterArr = (filt) => ArreyList.filter(function(item) {
+    const filterArr = (filt) => this.state.allTask.filter(function(item) {
       return item.status === filt
       }
     )
@@ -30,11 +62,36 @@ class ListTask extends React.Component {
       this.setState({arr: filterArr(this.state.filter)})
     }
     else if(prevState.filter !== this.state.filter && this.state.filter === 'all') {
-      this.setState({arr: ArreyList})
+      this.setState({arr: this.state.allTask})
     }
   }
 
   render() {
+    let arrey = this.state.arr
+
+    let _arreySort = (SortParam) => arrey.sort(function(a,b)
+    { if (a[SortParam] >= b[SortParam]) {return 1}
+      else return -1
+      }
+    ) 
+
+    const useSort = (sort) => {
+      switch(sort) {
+        case "status":
+          return _arreySort("status")
+        break;
+        case "date":
+          return _arreySort("date")
+        break;
+        case "priority":
+          return _arreySort("priority")
+        break;
+        default:
+        return _arreySort("status")
+      }
+    }
+
+    useSort(this.state.sort)
 
     const useView = (view) => {
       switch (view) {
@@ -61,6 +118,7 @@ class ListTask extends React.Component {
     useView(this.state.view) 
 
     // eslint-disable-next-line
+
 
   return (
     <div>

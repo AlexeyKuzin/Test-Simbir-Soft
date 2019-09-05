@@ -6,9 +6,15 @@ import RenderLogIn from './LogIn/LogIn';
 import ListTask from './TasksList/ListTask';
 
 class App extends React.Component {
-  
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: "false"
+    }
+  }
+
   render()
-  
+   
   {
     return (
       <div className="App">

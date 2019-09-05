@@ -18,12 +18,14 @@ const DetailTask = (props) => {
   <div className="col-10">
   <table className="table tablehover">
     <thead className="thead-dark">
+    <tr>
       <th scope = "col-1">Id</th>
       <th scope = "col-2">Title</th>
       <th scope = "col-1">Status</th>
       <th scope = "col-1">Owner</th>
       <th scope = "col-1">Date</th>
       <th scope = "col-1">Priority</th>
+    </tr>
     </thead>
     <tbody>
       {ListItems}
